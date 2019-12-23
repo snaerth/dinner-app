@@ -9,5 +9,5 @@ test('label to have value', async () => {
       placeholder: 'Placeholder',
     },
   })
-  expect(getByText(container, 'Username')).toHaveTextContent('Test')
+  expect(getByText(container, 'Username')).toHaveTextContent('Username')
 })
