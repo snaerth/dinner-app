@@ -14,9 +14,11 @@
     "test": "jest src",
     "test:watch": "npm run test -- --watch"
   },
-  "pre-commit": [
-    "precommit"
-  ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit"
+    }
+  },
   "dependencies": {
     "compression": "^1.7.1",
     "polka": "next",
@@ -38,11 +40,11 @@
     "eslint": "^6.8.0",
     "eslint-plugin-jest": "^23.1.1",
     "eslint-plugin-svelte3": "^2.7.3",
+    "husky": "^3.1.0",
     "jest": "^24.9.0",
     "jest-dom": "^4.0.0",
     "node-sass": "^4.13.0",
     "npm-run-all": "^4.1.5",
-    "pre-commit": "^1.2.2",
     "prettier": "^1.19.1",
     "prettier-plugin-svelte": "^0.7.0",
     "rollup": "^1.12.0",
