@@ -1,0 +1,61 @@
+{
+  "name": "dinner-app",
+  "description": "dinner application that helps you plan and organize your dinner meals",
+  "version": "0.0.1",
+  "scripts": {
+    "format": "npx prettier --write \"{,!(node_modules)/**/}src/**/*.{js,svelte,json}\"",
+    "eslint": "eslint --fix --quiet \"{,!(node_modules)/**/}src/**/*.{js,svelte}\"",
+    "stylelint": "stylelint \"./**/*.{scss,svelte}\" --fix --quiet",
+    "precommit": "concurrently \"npm:format\" \"npm:stylelint\" \"npm:eslint\" \"npm:test\"",
+    "dev": "sapper dev",
+    "build": "sapper build --legacy",
+    "export": "sapper export --legacy",
+    "start": "node __sapper__/build",
+    "test": "jest src",
+    "test:watch": "npm run test -- --watch"
+  },
+  "pre-commit": [
+    "precommit"
+  ],
+  "dependencies": {
+    "compression": "^1.7.1",
+    "polka": "next",
+    "sirv": "^0.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.0.0",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/runtime": "^7.0.0",
+    "@rollup/plugin-replace": "^2.2.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/svelte": "^1.11.0",
+    "autoprefixer": "^9.7.3",
+    "babel-jest": "^24.9.0",
+    "bulma": "^0.8.0",
+    "concurrently": "^5.0.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-jest": "^23.1.1",
+    "eslint-plugin-svelte3": "^2.7.3",
+    "jest": "^24.9.0",
+    "jest-dom": "^4.0.0",
+    "node-sass": "^4.13.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.19.1",
+    "prettier-plugin-svelte": "^0.7.0",
+    "rollup": "^1.12.0",
+    "rollup-plugin-babel": "^4.0.2",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-svelte": "^5.0.1",
+    "rollup-plugin-svg-import": "^1.2.0",
+    "rollup-plugin-terser": "^4.0.4",
+    "sapper": "^0.27.0",
+    "stylelint": "^12.0.0",
+    "stylelint-config-recommended": "^3.0.0",
+    "svelte": "^3.0.0",
+    "svelte-jester": "^1.0.3",
+    "svelte-preprocess": "^3.3.0"
+  }
+}
