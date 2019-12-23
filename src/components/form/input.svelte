@@ -1,12 +1,3 @@
-<style>
-  span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.333em;
-  }
-</style>
-
 <script>
   export let label = ''
   export let placeholder = ''
@@ -20,7 +11,7 @@
   <div class="control has-icons-right">
     <input class="input" {type} {placeholder} id="{label}" />
     {#if icon}
-      <span class="icon is-right">
+      <span class="icon is-right flexCenter">
         {@html icon}
       </span>
     {/if}

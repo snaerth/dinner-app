@@ -35,3 +35,9 @@ main {
   padding: 2em;
   margin: 0 auto;
 }
+
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
