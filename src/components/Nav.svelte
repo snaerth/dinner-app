@@ -69,10 +69,5 @@
         Sign in
       </a>
     </li>
-    <li>
-      <a rel="prefetch" class:selected="{segment === 'signup'}" href="signup">
-        Register
-      </a>
-    </li>
   </ul>
 </nav>
