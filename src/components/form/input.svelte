@@ -17,6 +17,7 @@
   export let value = ''
   export let switchIcon = false
   export let iconSwitch = false
+  export let shake = ''
 
   function handleKeydown(e) {
     dispatch(label.toLowerCase(), {
@@ -35,6 +36,8 @@
     <input
       on:blur="{handleKeydown}"
       class="input is-medium"
+      class:shake
+      class:is-danger="{error}"
       type="{type === 'password' && iconSwitch ? 'text' : type}"
       {placeholder}
       id="{label}"

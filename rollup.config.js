@@ -1,9 +1,11 @@
+import path from 'path'
 import resolve from 'rollup-plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
 import commonjs from 'rollup-plugin-commonjs'
 import svelte from 'rollup-plugin-svelte'
 import babel from 'rollup-plugin-babel'
 import { terser } from 'rollup-plugin-terser'
+import alias from '@rollup/plugin-alias';
 import svg from 'rollup-plugin-svg-import'
 import config from 'sapper/config/rollup.js'
 import sveltePreprocess from 'svelte-preprocess'
@@ -12,6 +14,10 @@ import pkg from './package.json'
 const mode = process.env.NODE_ENV
 const dev = mode === 'development'
 const legacy = !!process.env.SAPPER_LEGACY_BUILD
+const customResolver = resolve({
+  extensions: ['.svelte','.scss']
+});
+const projectRootDir = path.resolve(__dirname);
 
 const onwarn = (warning, onwarn) =>
   (warning.code === 'CIRCULAR_DEPENDENCY' &&
@@ -34,6 +40,15 @@ export default {
     input: config.client.input(),
     output: config.client.output(),
     plugins: [
+      alias({
+        entries: [
+          {
+            find: '@',
+            replacement: path.resolve(projectRootDir, 'src')
+          },
+        ],
+        customResolver
+      }),
       replace({
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
@@ -88,6 +103,15 @@ export default {
     input: config.server.input(),
     output: config.server.output(),
     plugins: [
+      alias({
+        entries: [
+          {
+            find: '@',
+            replacement: path.resolve(projectRootDir, 'src')
+          },
+        ],
+        customResolver
+      }),
       replace({
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),

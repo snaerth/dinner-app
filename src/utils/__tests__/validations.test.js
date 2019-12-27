@@ -15,16 +15,27 @@ test('email with no domain is invalid', () => {
 })
 
 test('email cant be longer than 254 characters', () => {
-  expect(emailValidate('snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnae@test.com')).toBe(false)
+  expect(
+    emailValidate(
+      'snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssonsnae@test.com'
+    )
+  ).toBe(false)
 })
 
 test('email first part cant be longer than 64 characters', () => {
-  expect(emailValidate('snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddsso@test.com')).toBe(false)
+  expect(
+    emailValidate(
+      'snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddsso@test.com'
+    )
+  ).toBe(false)
 })
 
-
 test('email domain part cant be longer than 63 characters', () => {
-  expect(emailValidate('test@snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddss.com')).toBe(false)
+  expect(
+    emailValidate(
+      'test@snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddss.com'
+    )
+  ).toBe(false)
 })
 
 test('email is valid', () => {
@@ -38,6 +49,14 @@ test('password should at least be 8 characters', () => {
 })
 
 test('password should be no longer than 100 characters', () => {
-  expect(passwordValidate('snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssosnaerseljanthoroddssonsnaerseljanth')).toBe(true)
-  expect(passwordValidate('snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssosnaerseljanthoroddssonsnaerseljanth11')).toBe(false)
+  expect(
+    passwordValidate(
+      'snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssosnaerseljanthoroddssonsnaerseljanth'
+    )
+  ).toBe(true)
+  expect(
+    passwordValidate(
+      'snaerseljanthoroddssonsnaerseljanthoroddssonsnaerseljanthoroddssosnaerseljanthoroddssonsnaerseljanth11'
+    )
+  ).toBe(false)
 })

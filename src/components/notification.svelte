@@ -1,14 +1,18 @@
 <style lang="scss">
   .absolute {
     position: absolute;
-    left: 0;
     top: 0;
+    left: 0;
     right: 0;
     z-index: 5;
   }
 
-  button:hover svg {
-    fill: red;
+  .close {
+    position: absolute;
+    right: 1em;
+    top: 1em;
+    cursor: pointer;
+    line-height: 0;
   }
 </style>
 
@@ -34,11 +38,13 @@
   class:absolute
   transition:fly="{{ delay: 100, duration: 700, x: 0, y: -150, opacity: 0.5, easing: quintOut }}"
 >
-  <button
-    class="button is-transparent delete svg-white-on-hover fadeIn"
+  <div
+    class="close svg-white svg-grey-dark-hover"
     on:click="{closeHandler}"
+    role="button"
+    tabindex="0"
   >
     {@html CloseIcon}
-  </button>
+  </div>
   <slot />
 </div>

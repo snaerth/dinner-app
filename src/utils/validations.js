@@ -45,8 +45,8 @@ export function emailValidate(email) {
  * @returns {boolean}
  */
 export function passwordValidate(password) {
-  if(password.length < 8 || password.length > 100) {
-    return false;
+  if (password.length < 8 || password.length > 100) {
+    return false
   }
 
   return true

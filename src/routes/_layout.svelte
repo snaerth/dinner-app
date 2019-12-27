@@ -3,7 +3,7 @@
 </style>
 
 <script>
-  import Nav from '../components/Nav.svelte'
+  import Nav from '../components/nav.svelte'
 
   export let segment
 </script>

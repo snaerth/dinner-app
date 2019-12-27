@@ -1,3 +1,4 @@
+@import './bulma.scss';
 @import './theme.scss';
 @import './keyframes.scss';
 
@@ -9,6 +10,14 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background-color: $background-main;
+}
+
+a {
+  &:hover {
+    text-decoration: underline;
+    color: $link-dark;
+  }
 }
 
 h6 {
@@ -46,11 +55,26 @@ main {
   border: none;
 }
 
-.svg-white-on-hover:hover {
-  svg {
-    animation: fadeIn 150ms ease-in-out;
-    fill: #fff;
-  }
+svg {
+  fill: $black-ter;
+}
+
+.svg-white svg {
+  animation: fadeIn 150ms ease-in-out;
+  fill: #fff;
+}
+
+.svg-grey-dark-hover:hover svg {
+  animation: fadeIn 150ms ease-in-out;
+  fill: $grey-dark;
+}
+
+// animations
+.shake {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 @media only screen and (min-width: $tablet) {

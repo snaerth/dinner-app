@@ -5,13 +5,23 @@
     align-items: center;
   }
 
+  h1 {
+    margin-top: 0.5em;
+  }
+
   p {
-    margin-bottom: 2em;
+    margin-bottom: 3em;
+  }
+
+  .box {
+    max-width: 30em;
+    margin: 0 auto;
   }
 </style>
 
 <script>
   import { emailValidate, passwordValidate } from '../utils/validations'
+  import { ENTER } from '../utils/keyCodes'
   import Input from '../components/form/input.svelte'
   import Notification from '../components/notification.svelte'
   import EmailIcon from '../assets/svg/email-24px.svg'
@@ -22,20 +32,36 @@
   let errorMessage = []
   let notificationIsOpen = false
   let visibility = false
+  const emailErrorMessage = 'Email is invalid'
+  const passwordErrorMessage =
+    'Password minimum length is 8 characters and maximum length 100'
 
   const inputs = {
-    username: {
-      value: '69snaer',
+    email: {
+      value: '',
       error: '',
       isDirty: false,
+      shake: false,
     },
     password: {
-      value: 'JaN.C5.12',
+      value: '',
       error: '',
       isDirty: false,
+      shake: false,
     },
   }
 
+  // Submit button keydown event
+  function onKeyDown(e) {
+    if (e.keyCode === ENTER) {
+      submit()
+    }
+  }
+
+  /**
+   * Close notification event
+   * @param {Object} e Svelte event dispatcher
+   * */
   function closeNotification(e) {
     const {
       detail: { isOpen },
@@ -44,22 +70,44 @@
     notificationIsOpen = isOpen
   }
 
+  function setError(type, error) {
+    inputs[type].isDirty = true
+    inputs[type].shake = true
+    inputs[type].error = error
+
+    setTimeout(() => {
+      inputs[type].shake = false
+    }, 820)
+  }
+
+  // Submit sign in
   async function submit() {
     loading = true
-    const { username, password } = inputs
 
-    if (!username.value) {
-      username.value = document.getElementById('Username').value
+    if (!inputs.email.value) {
+      inputs.email.value = document.getElementById('Email').value
     }
 
-    if (!password.value) {
-      password.value = document.getElementById('Password').value
+    if (!emailValidate(inputs.email.value)) {
+      inputs.email.isDirty = true
+      inputs.email.error = emailErrorMessage
+      setError('email', emailErrorMessage)
     }
 
-    if (!username.error && !password.error) {
+    if (!inputs.password.value) {
+      inputs.password.value = document.getElementById('Password').value
+    }
+
+    if (!passwordValidate(inputs.password.value)) {
+      inputs.password.isDirty = true
+      inputs.password.error = passwordErrorMessage
+      setError('password', passwordErrorMessage)
+    }
+
+    if (!inputs.email.error && !inputs.password.error) {
       const body = JSON.stringify({
-        identifier: username.value,
-        password: password.value,
+        identifier: inputs.email.value,
+        password: inputs.password.value,
       })
 
       const res = await fetch('http://localhost:1337/auth/local', {
@@ -76,6 +124,8 @@
         errorMessage = data.message[0].messages
         notificationIsOpen = true
       }
+
+      console.log('data', data)
     }
 
     loading = false
@@ -92,17 +142,23 @@
     } = e
 
     switch (type) {
-      case 'username':
-        inputs.username.isDirty = true
-        inputs.username.error = !emailValidate(value) ? 'Email is invalid' : ''
-        inputs.username.value = value
+      case 'email':
+        if (!emailValidate(value)) {
+          setError('email', emailErrorMessage)
+        } else {
+          inputs.email.error = false
+        }
+
+        inputs.email.value = value
         break
 
       case 'password':
-        inputs.password.isDirty = true
-        inputs.password.error = !passwordValidate(value)
-          ? 'Password minimum length 8 characters and maximum length 100'
-          : ''
+        if (!passwordValidate(value)) {
+          setError('password', passwordErrorMessage)
+        } else {
+          inputs.password.error = false
+        }
+
         inputs.password.value = value
         break
 
@@ -116,17 +172,21 @@
   <title>Sign in</title>
 </svelte:head>
 <div class="box is-relative is-clipped">
-  <h1 class="has-text-centered is-size-3-mobile">Log into you account</h1>
-  <a href="register" class="has-text-centered">Need an account?</a>
+  <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
+  <p class="has-text-centered">
+    Don't have an account?
+    <a href="register" class="has-text-centered">Register here</a>
+  </p>
   <form autocomplete="off" on:submit|preventDefault="{submit}">
     <Input
-      label="Username"
+      label="Email"
       icon="{EmailIcon}"
-      on:username="{handleInputChange}"
-      error="{inputs.username.isDirty && inputs.username.error}"
+      on:email="{handleInputChange}"
+      error="{inputs.email.isDirty && inputs.email.error}"
       autocomplete="off"
       placeholder="someone@any.com"
-      value="{inputs.username.value}"
+      value="{inputs.email.value}"
+      shake="{inputs.email.shake}"
     />
     <Input
       label="Password"
@@ -140,6 +200,7 @@
       autocomplete="new-password"
       placholder="I am you password"
       value="{inputs.password.value}"
+      shake="{inputs.password.shake}"
     />
     <div class="formFooter">
       <div class="field is-marginless">
@@ -155,6 +216,7 @@
       <button
         class="button is-primary"
         class:is-loading="{loading}"
+        on:keydown="{onKeyDown}"
         type="submit"
       >
         SIGN IN
