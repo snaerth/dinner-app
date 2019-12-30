@@ -1,8 +1,6 @@
-<style lang="scss">
-  @import '../styles/theme.scss';
-
+<style>
   nav {
-    background-color: $background-main;
+    background-color: #fff;
     border-bottom: 1px solid rgba(255, 62, 0, 0.1);
     font-weight: 300;
     padding: 0 1em;

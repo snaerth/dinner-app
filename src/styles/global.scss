@@ -42,6 +42,7 @@ h1 {
 main {
   position: relative;
   padding: 1em;
+  min-height: calc(100vh - 57px); // Navigation height
 }
 
 .flexCenter {

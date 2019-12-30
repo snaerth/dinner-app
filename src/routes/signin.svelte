@@ -3,6 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 2em;
   }
 
   h1 {
@@ -14,6 +15,7 @@
   }
 
   .box {
+    width: 100%;
     max-width: 30em;
     margin: 0 auto;
   }
@@ -24,6 +26,7 @@
   import { ENTER } from '../utils/keyCodes'
   import Input from '../components/form/input.svelte'
   import Notification from '../components/notification.svelte'
+  import Center from '../components/center.svelte'
   import EmailIcon from '../assets/svg/email-24px.svg'
   import VisibilityIcon from '../assets/svg/visibility-24px.svg'
   import VisibilityOffIcon from '../assets/svg/visibility_off-24px.svg'
@@ -171,63 +174,65 @@
 <svelte:head>
   <title>Sign in</title>
 </svelte:head>
-<div class="box is-relative is-clipped">
-  <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
-  <p class="has-text-centered">
-    Don't have an account?
-    <a href="register" class="has-text-centered">Register here</a>
-  </p>
-  <form autocomplete="off" on:submit|preventDefault="{submit}">
-    <Input
-      label="Email"
-      icon="{EmailIcon}"
-      on:email="{handleInputChange}"
-      error="{inputs.email.isDirty && inputs.email.error}"
-      autocomplete="off"
-      placeholder="someone@any.com"
-      value="{inputs.email.value}"
-      shake="{inputs.email.shake}"
-    />
-    <Input
-      label="Password"
-      icon="{VisibilityIcon}"
-      on:password="{handleInputChange}"
-      switchIcon="{VisibilityOffIcon}"
-      on:iconSwitch="{handleIconSwitch}"
-      iconSwitch="{visibility}"
-      type="password"
-      error="{inputs.password.isDirty && inputs.password.error}"
-      autocomplete="new-password"
-      placholder="I am you password"
-      value="{inputs.password.value}"
-      shake="{inputs.password.shake}"
-    />
-    <div class="formFooter">
-      <div class="field is-marginless">
-        <input
-          class="is-checkradio"
-          id="rememberme"
-          type="checkbox"
-          name="rememberme"
-          checked="checked"
-        />
-        <label for="rememberme">Remember me</label>
+<Center>
+  <div class="box is-relative is-clipped">
+    <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
+    <p class="has-text-centered">
+      Don't have an account?
+      <a href="register" class="has-text-centered">Register here</a>
+    </p>
+    <form autocomplete="off" on:submit|preventDefault="{submit}">
+      <Input
+        label="Email"
+        icon="{EmailIcon}"
+        on:email="{handleInputChange}"
+        error="{inputs.email.isDirty && inputs.email.error}"
+        autocomplete="off"
+        placeholder="someone@any.com"
+        value="{inputs.email.value}"
+        shake="{inputs.email.shake}"
+      />
+      <Input
+        label="Password"
+        icon="{VisibilityIcon}"
+        on:password="{handleInputChange}"
+        switchIcon="{VisibilityOffIcon}"
+        on:iconSwitch="{handleIconSwitch}"
+        iconSwitch="{visibility}"
+        type="password"
+        error="{inputs.password.isDirty && inputs.password.error}"
+        autocomplete="new-password"
+        placholder="I am you password"
+        value="{inputs.password.value}"
+        shake="{inputs.password.shake}"
+      />
+      <div class="formFooter">
+        <div class="field is-marginless">
+          <input
+            class="is-checkradio"
+            id="rememberme"
+            type="checkbox"
+            name="rememberme"
+            checked="checked"
+          />
+          <label for="rememberme">Remember me</label>
+        </div>
+        <button
+          class="button is-primary"
+          class:is-loading="{loading}"
+          on:keydown="{onKeyDown}"
+          type="submit"
+        >
+          SIGN IN
+        </button>
       </div>
-      <button
-        class="button is-primary"
-        class:is-loading="{loading}"
-        on:keydown="{onKeyDown}"
-        type="submit"
-      >
-        SIGN IN
-      </button>
-    </div>
-  </form>
-  {#if errorMessage.length > 0 && notificationIsOpen}
-    <Notification absolute on:close="{closeNotification}">
-      <slot>
-        {#each errorMessage as msg}{msg.message}{/each}
-      </slot>
-    </Notification>
-  {/if}
-</div>
+    </form>
+    {#if errorMessage.length > 0 && notificationIsOpen}
+      <Notification absolute on:close="{closeNotification}">
+        <slot>
+          {#each errorMessage as msg}{msg.message}{/each}
+        </slot>
+      </Notification>
+    {/if}
+  </div>
+</Center>

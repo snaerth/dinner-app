@@ -9,6 +9,7 @@ import alias from '@rollup/plugin-alias';
 import svg from 'rollup-plugin-svg-import'
 import config from 'sapper/config/rollup.js'
 import sveltePreprocess from 'svelte-preprocess'
+import sapperEnv from './env.config'
 import pkg from './package.json'
 
 const mode = process.env.NODE_ENV
@@ -50,6 +51,7 @@ export default {
         customResolver
       }),
       replace({
+        ...sapperEnv(),
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
       }),
@@ -113,6 +115,7 @@ export default {
         customResolver
       }),
       replace({
+        ...sapperEnv(),
         'process.browser': false,
         'process.env.NODE_ENV': JSON.stringify(mode),
       }),
