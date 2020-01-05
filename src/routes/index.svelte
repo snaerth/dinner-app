@@ -1,6 +1,19 @@
+<script context="module">
+  export function preload(_, { isAuthenticated }) {
+    return { isAuthenticated }
+  }
+</script>
+
+<script>
+  export let isAuthenticated
+</script>
+
 <svelte:head>
-  <title>Sapper project template</title>
+  <title>Dinner applications</title>
 </svelte:head>
 
-<h1>Home page</h1>
-<button class="button is-primary is-medium">Senda</button>
+{#if isAuthenticated}
+  <h1>Logged in</h1>
+{:else}
+  <h1>Not logged in</h1>
+{/if}

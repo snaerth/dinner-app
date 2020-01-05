@@ -1,11 +1,15 @@
-node_js:
-  - '12'
-language: node_js
 sudo: false
+language: node_js
+node_js:
+  - "stable"
+  
+env:
+  global:
+    - BUILD_TIMEOUT=10000
 
 install:
-- npm install
-- npm run build
+  - npm install
 
 script:
-- npm run test
+  - npm run test
+  - npm run build

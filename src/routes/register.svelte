@@ -175,8 +175,9 @@
 </script>
 
 <svelte:head>
-  <title>Sign in</title>
+  <title>Register</title>
 </svelte:head>
+
 <Center>
   <div class="box is-relative is-clipped">
     <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
