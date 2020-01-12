@@ -20,6 +20,7 @@ const customResolver = resolve({
 });
 const projectRootDir = path.resolve(__dirname);
 
+
 const onwarn = (warning, onwarn) =>
   (warning.code === 'CIRCULAR_DEPENDENCY' &&
     /[/\\]@sapper[/\\]/.test(warning.message)) ||
@@ -29,11 +30,16 @@ const dedupe = importee =>
 
 const preprocess = sveltePreprocess({
   scss: {
-    includePaths: ['src'],
+    includePaths: [
+      'node_modules',
+      'src'
+    ]
   },
   postcss: {
-    plugins: [require('autoprefixer')],
-  },
+    plugins: [
+      require('autoprefixer'),
+    ]
+  }
 })
 
 export default {

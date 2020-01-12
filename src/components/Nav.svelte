@@ -1,75 +1,95 @@
-<style>
-  nav {
-    background-color: #fff;
-    border-bottom: 1px solid rgba(255, 62, 0, 0.1);
-    font-weight: 300;
-    padding: 0 1em;
+<style lang="scss">
+  @import '../styles/variables.scss';
+
+  .navbar-burger {
+    cursor: pointer;
   }
 
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-
-  /* clearfix */
-  ul::after {
-    content: '';
-    display: block;
-    clear: both;
-  }
-
-  li {
-    display: block;
-    float: left;
-  }
-
-  .selected {
-    position: relative;
-    display: inline-block;
-  }
-
-  .selected::after {
-    position: absolute;
-    content: '';
-    width: calc(100% - 1em);
-    height: 2px;
-    background-color: rgb(255, 62, 0);
-    display: block;
-    bottom: -1px;
-  }
-
-  a {
-    text-decoration: none;
-    padding: 1em 0.5em;
-    display: block;
+  @media only screen and (min-width: $desktop) {
+    .navbar-burger {
+      display: none;
+    }
   }
 </style>
 
 <script>
+  import { afterUpdate } from 'svelte'
+  import routes from '../routes'
   import Dropdown from './dropdown.svelte'
+  import Menu from './menu.svelte'
+  import MenuIcon from '../assets/svg/menu-24px.svg'
 
   export let segment
+  export let open = false
+  let stateSegment = segment
+
+  const routesLeft = [routes.home]
+  const routesRight = [routes.signin, routes.register]
+
+  afterUpdate(() => {
+    // if menu is open then close the menu
+    // if location changes
+    if (stateSegment !== segment) {
+      open = false
+      stateSegment = segment
+    }
+  })
+
+  function menuClick() {
+    open = !open
+  }
+
+  function closeMenu(e) {
+    // Only close menu if event target tag name is DIV
+    // Not other elements inside Menu are div elements except
+    // the overlay container
+    if (e.target.tagName === 'DIV') {
+      open = false
+    }
+  }
 </script>
 
-<nav>
-  <ul>
-    <li>
-      <a class:selected="{segment === undefined}" href=".">home</a>
-    </li>
-    <li>
-      <a rel="prefetch" class:selected="{segment === 'signin'}" href="signin">
-        Sign in
-      </a>
-    </li>
-    <li>
-      <a
-        rel="prefetch"
-        class:selected="{segment === 'register'}"
-        href="register"
+<nav class="navbar is-primary">
+  <div class="container">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="/">Dinner app</a>
+      <span
+        role="button"
+        class="navbar-burger flexCenter"
+        aria-label="menu"
+        aria-expanded="false"
+        on:click="{menuClick}"
       >
-        Register
-      </a>
-    </li>
-    <Dropdown />
-  </ul>
+        {@html MenuIcon}
+      </span>
+    </div>
+    <div class="navbar-start is-hidden-mobile">
+      {#each routesLeft as route}
+        <a
+          class:is-active="{segment === route.name}"
+          class="navbar-item"
+          href="{route.href}"
+          rel="prefetch"
+        >
+          {route.name === undefined ? 'Home' : route.name}
+        </a>
+      {/each}
+      <Dropdown />
+    </div>
+    <div class="navbar-end is-hidden-mobile">
+      {#each routesRight as route}
+        <a
+          class:is-active="{segment === route.name}"
+          class="navbar-item"
+          href="{route.href}"
+          rel="prefetch"
+        >
+          {route.name}
+        </a>
+      {/each}
+    </div>
+  </div>
 </nav>
+{#if open}
+  <Menu {closeMenu} />
+{/if}

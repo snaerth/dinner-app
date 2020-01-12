@@ -4,7 +4,7 @@ import { post as signIn } from '../../services/http'
 export async function post(req, res) {
   try {
     const { email, password } = req.body
-    const { SAPPER_APP_SESSION_SECRET} = process.env
+    const { SAPPER_APP_SESSION_SECRET } = process.env
 
     // Make sign in request to API
     const { data } = await signIn(`${SAPPER_APP_SESSION_SECRET}/auth/local`, {

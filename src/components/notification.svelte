@@ -17,7 +17,7 @@
 </style>
 
 <script>
-  import { fly } from 'svelte/transition'
+  import { slide } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
   import { createEventDispatcher } from 'svelte'
   import CloseIcon from '../assets/svg/close-24px.svg'
@@ -36,7 +36,7 @@
 <div
   class="notification is-danger"
   class:absolute
-  transition:fly="{{ delay: 100, duration: 700, x: 0, y: -150, opacity: 0.5, easing: quintOut }}"
+  transition:slide="{{ delay: 250, duration: 300, easing: quintOut }}"
 >
   <div
     class="close svg-white svg-grey-dark-hover"

@@ -1,0 +1,13 @@
+@import 'bulma/sass/utilities/initial-variables.sass';
+
+$desktop: $desktop;
+
+:root {
+  --gap: $gap;
+
+  // Colors
+  --white: #fff;
+
+  // z-index
+  --z-index-menu: 31;
+}
