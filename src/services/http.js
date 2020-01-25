@@ -5,15 +5,15 @@ import { DEFAULT_HEADERS } from '../constants/headers'
  * Axios post request helper wrapper
  * @param {string} url endpoint
  * @param {object} data request payload
- * @returns {object} axios response object
+ * @returns {Promise} axios promise with response object
  */
-export async function post(url, data) {
-  const response = await axios({
+export function post(url, data) {
+  return axios({
     method: 'POST',
     url,
     headers: DEFAULT_HEADERS,
     data,
   })
-
-  return response
+    .then(response => response)
+    .catch(error =>  error.response)
 }

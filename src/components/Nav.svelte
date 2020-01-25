@@ -63,7 +63,7 @@
         {@html MenuIcon}
       </span>
     </div>
-    <div class="navbar-start is-hidden-mobile">
+    <div class="navbar-start is-hidden-touch">
       {#each routesLeft as route}
         <a
           class:is-active="{segment === route.name}"
@@ -76,7 +76,7 @@
       {/each}
       <Dropdown />
     </div>
-    <div class="navbar-end is-hidden-mobile">
+    <div class="navbar-end is-hidden-touch">
       {#each routesRight as route}
         <a
           class:is-active="{segment === route.name}"

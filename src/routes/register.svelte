@@ -178,7 +178,7 @@
   <title>Register</title>
 </svelte:head>
 
-<Center>
+<Center boxCenter>
   <div class="box is-relative is-clipped">
     <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
     <p class="has-text-centered">

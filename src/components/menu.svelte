@@ -8,7 +8,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: var(--z-index-menu);
+    z-index: $z-index-menu;
   }
 
   aside {
@@ -18,14 +18,13 @@
     width: 100%;
     max-width: 270px;
     padding: $gap;
-    background-color: var(--white);
+    background-color: $white;
   }
 </style>
 
 <script>
   import { fly, fade } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
-  import routes from '../routes'
 
   export let closeMenu
 </script>

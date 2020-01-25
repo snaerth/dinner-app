@@ -4,6 +4,8 @@ import bodyParser from 'body-parser'
 import session from 'express-session'
 import sessionFileStore from 'session-file-store'
 import compression from 'compression'
+// import uuidv4 from 'uuid/v4'
+// import csp from 'helmet-csp'
 import * as sapper from '@sapper/server'
 
 // Register environmental variables from .env file in root of project
@@ -47,12 +49,24 @@ express()
   .use(sessionMiddleware)
   .use(compression({ threshold: 0 }), assets)
   .use(authenticationMiddleware)
+  // .use((_, res, next) => {
+  //   res.locals.nonce = uuidv4()
+  //   next()
+  // })
+  // .use(
+  //   csp({
+  //     directives: {
+  //       scriptSrc: ["'self'", (_, res) => `'nonce-${res.locals.nonce}'`],
+  //     },
+  //   })
+  // )
   .use(
     sapper.middleware({
-      session: req => ({
+      session: (req, res) => ({
         jwt: req.session.jwt,
         user: req.session.user,
         isAuthenticated: req.session.isAuthenticated,
+        nonce: res.locals.nonce
       }),
     })
   )

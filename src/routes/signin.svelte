@@ -120,10 +120,7 @@
         password: inputs.password.value,
       })
 
-      if (res.status === HttpStatus.BAD_REQUEST) {
-        errorMessage = res.message[0].messages
-        notificationIsOpen = true
-      } else if (res.data) {
+      if (res.status === HttpStatus.OK) {
         const { user, jwt } = res.data
         // Set user in store
         userStore.set(user)
@@ -131,6 +128,12 @@
         $session.user = serialize(user)
         $session.jwt = serialize(jwt)
         goto('/')
+      } else if (res.message && res.message[0] && res.message[0].messages) {
+        errorMessage = res.message[0].messages
+        notificationIsOpen = true
+      } else {
+        errorMessage = [{ message: res.data }]
+        notificationIsOpen = true
       }
     }
 
@@ -177,7 +180,7 @@
 <svelte:head>
   <title>Sign in</title>
 </svelte:head>
-<Center>
+<Center boxCenter>
   <div class="box is-relative is-clipped">
     <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
     <p class="has-text-centered">
