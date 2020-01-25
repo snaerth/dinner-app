@@ -66,7 +66,7 @@ express()
         jwt: req.session.jwt,
         user: req.session.user,
         isAuthenticated: req.session.isAuthenticated,
-        nonce: res.locals.nonce
+        nonce: res.locals.nonce,
       }),
     })
   )

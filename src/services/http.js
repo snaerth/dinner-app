@@ -15,5 +15,5 @@ export function post(url, data) {
     data,
   })
     .then(response => response)
-    .catch(error =>  error.response)
+    .catch(error => error.response)
 }

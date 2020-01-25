@@ -2,7 +2,8 @@ import HttpStatus from 'http-status-codes'
 import serialize from 'serialize-javascript'
 import { post as signIn } from '../../services/http'
 
-const internalServerErrorMsg = "Sorry. It's not you. It's us. We're experencing an internal server problem. Please try again later."
+const internalServerErrorMsg =
+  "Sorry. It's not you. It's us. We're experencing an internal server problem. Please try again later."
 
 export async function post(req, res) {
   try {
