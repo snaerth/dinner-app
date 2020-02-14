@@ -15,7 +15,6 @@
 <script>
   import { afterUpdate } from 'svelte'
   import routes from '../routes'
-  import Dropdown from './dropdown.svelte'
   import Menu from './menu.svelte'
   import MenuIcon from '../assets/svg/menu-24px.svg'
 
@@ -23,7 +22,6 @@
   export let open = false
   let stateSegment = segment
 
-  const routesLeft = [routes.home]
   const routesRight = [routes.signin, routes.register]
 
   afterUpdate(() => {
@@ -52,7 +50,7 @@
 <nav class="navbar is-primary">
   <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item" href="/">Dinner app</a>
+      <a class="navbar-item" href="/">Dinner application</a>
       <span
         role="button"
         class="navbar-burger flexCenter"
@@ -62,19 +60,6 @@
       >
         {@html MenuIcon}
       </span>
-    </div>
-    <div class="navbar-start is-hidden-touch">
-      {#each routesLeft as route}
-        <a
-          class:is-active="{segment === route.name}"
-          class="navbar-item"
-          href="{route.href}"
-          rel="prefetch"
-        >
-          {route.name === undefined ? 'Home' : route.name}
-        </a>
-      {/each}
-      <Dropdown />
     </div>
     <div class="navbar-end is-hidden-touch">
       {#each routesRight as route}

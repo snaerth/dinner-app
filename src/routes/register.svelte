@@ -27,12 +27,23 @@
   import { goto, stores } from '@sapper/app'
   import { user as userStore } from '../store'
   import { post } from '../services/http'
-  import { emailValidate, passwordValidate } from '../utils/validations'
+  import {
+    emailValidate,
+    passwordValidate,
+    usernameValidate,
+  } from '../utils/validations'
+  import {
+    emailErrorMessage,
+    passwordErrorMessage,
+    usernameErrorMessage,
+  } from '../constants/errors'
   import { ENTER } from '../utils/keyCodes'
+  import createInputsObj from '../utils/createInputsObj'
   import Input from '../components/form/input.svelte'
   import Notification from '../components/notification.svelte'
   import Center from '../components/center.svelte'
   import EmailIcon from '../assets/svg/email-24px.svg'
+  import PersonIcon from '../assets/svg/person-24px.svg'
   import VisibilityIcon from '../assets/svg/visibility-24px.svg'
   import VisibilityOffIcon from '../assets/svg/visibility_off-24px.svg'
 
@@ -42,24 +53,8 @@
   let errorMessage = []
   let notificationIsOpen = false
   let visibility = false
-  const emailErrorMessage = 'Email is invalid'
-  const passwordErrorMessage =
-    'Password minimum length is 8 characters and maximum length 100'
-
-  const inputs = {
-    email: {
-      value: '',
-      error: '',
-      isDirty: false,
-      shake: false,
-    },
-    password: {
-      value: '',
-      error: '',
-      isDirty: false,
-      shake: false,
-    },
-  }
+  // Create default input objects with state
+  const inputs = createInputsObj(['username', 'email', 'password'])
 
   // Submit button keydown event
   function onKeyDown(e) {
@@ -80,6 +75,11 @@
     notificationIsOpen = isOpen
   }
 
+  /**
+   * Sets error state on input object
+   * @param {String} type input property name
+   * @param {String} error error message
+   */
   function setError(type, error) {
     inputs[type].isDirty = true
     inputs[type].shake = true
@@ -93,6 +93,16 @@
   // Submit sign in
   async function submit() {
     loading = true
+
+    if (!inputs.username.value) {
+      inputs.username.value = document.getElementById('Username').value
+    }
+
+    if (!usernameValidate(inputs.username.value)) {
+      inputs.email.isDirty = true
+      inputs.email.error = usernameErrorMessage
+      setError('username', usernameErrorMessage)
+    }
 
     if (!inputs.email.value) {
       inputs.email.value = document.getElementById('Email').value
@@ -114,14 +124,21 @@
       setError('password', passwordErrorMessage)
     }
 
-    if (!inputs.email.error && !inputs.password.error) {
-      const res = await post('auth/signin', {
+    if (
+      !inputs.email.error &&
+      !inputs.password.error &&
+      !inputs.username.error
+    ) {
+      const res = await post('auth/register', {
         email: inputs.email.value,
         password: inputs.password.value,
       })
 
-      if (res.status === HttpStatus.BAD_REQUEST) {
-        errorMessage = res.message[0].messages
+      if (
+        res.status === HttpStatus.BAD_REQUEST ||
+        (res.data && res.data.statusCode === HttpStatus.BAD_REQUEST)
+      ) {
+        errorMessage = res.data.message[0].messages
         notificationIsOpen = true
       } else if (res.data) {
         const { user, jwt } = res.data
@@ -148,6 +165,16 @@
     } = e
 
     switch (type) {
+      case 'username':
+        if (!usernameValidate(value)) {
+          setError('username', usernameErrorMessage)
+        } else {
+          inputs.username.error = false
+        }
+
+        inputs.username.value = value
+        break
+
       case 'email':
         if (!emailValidate(value)) {
           setError('email', emailErrorMessage)
@@ -180,12 +207,22 @@
 
 <Center boxCenter>
   <div class="box is-relative is-clipped">
-    <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
+    <h1 class="has-text-centered is-size-3-mobile is-size-2">Create account</h1>
     <p class="has-text-centered">
-      Don't have an account?
-      <a href="register" class="has-text-centered">Register here</a>
+      Already have an account?
+      <a href="signin" class="has-text-centered">Login here</a>
     </p>
     <form autocomplete="off" on:submit|preventDefault="{submit}">
+      <Input
+        label="Username"
+        icon="{PersonIcon}"
+        on:username="{handleInputChange}"
+        error="{inputs.username.isDirty && inputs.username.error}"
+        autocomplete="off"
+        placeholder="username"
+        value="{inputs.username.value}"
+        shake="{inputs.username.shake}"
+      />
       <Input
         label="Email"
         icon="{EmailIcon}"
@@ -210,24 +247,14 @@
         value="{inputs.password.value}"
         shake="{inputs.password.shake}"
       />
-      <div class="formFooter">
-        <div class="field is-marginless">
-          <input
-            class="is-checkradio"
-            id="rememberme"
-            type="checkbox"
-            name="rememberme"
-            checked="checked"
-          />
-          <label for="rememberme">Remember me</label>
-        </div>
+      <div class="formFooter is-pulled-right">
         <button
           class="button is-primary"
           class:is-loading="{loading}"
           on:keydown="{onKeyDown}"
           type="submit"
         >
-          SIGN IN
+          Register
         </button>
       </div>
     </form>

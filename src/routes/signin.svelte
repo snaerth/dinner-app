@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 2em;
+    margin-top: 1em;
   }
 
   h1 {
@@ -28,6 +28,8 @@
   import { user as userStore } from '../store'
   import { post } from '../services/http'
   import { emailValidate, passwordValidate } from '../utils/validations'
+  import createInputsObj from '../utils/createInputsObj'
+  import { emailErrorMessage, passwordErrorMessage } from '../constants/errors'
   import { ENTER } from '../utils/keyCodes'
   import Input from '../components/form/input.svelte'
   import Notification from '../components/notification.svelte'
@@ -42,24 +44,8 @@
   let errorMessage = []
   let notificationIsOpen = false
   let visibility = false
-  const emailErrorMessage = 'Email is invalid'
-  const passwordErrorMessage =
-    'Password minimum length is 8 characters and maximum length 100'
-
-  const inputs = {
-    email: {
-      value: '',
-      error: '',
-      isDirty: false,
-      shake: false,
-    },
-    password: {
-      value: '',
-      error: '',
-      isDirty: false,
-      shake: false,
-    },
-  }
+  // Create default input objects with state
+  const inputs = createInputsObj(['email', 'password'])
 
   // Submit button keydown event
   function onKeyDown(e) {
@@ -80,6 +66,11 @@
     notificationIsOpen = isOpen
   }
 
+  /**
+   * Sets error state on input object
+   * @param {String} type input property name
+   * @param {String} error error message
+   */
   function setError(type, error) {
     inputs[type].isDirty = true
     inputs[type].shake = true
@@ -212,17 +203,7 @@
         value="{inputs.password.value}"
         shake="{inputs.password.shake}"
       />
-      <div class="formFooter">
-        <div class="field is-marginless">
-          <input
-            class="is-checkradio"
-            id="rememberme"
-            type="checkbox"
-            name="rememberme"
-            checked="checked"
-          />
-          <label for="rememberme">Remember me</label>
-        </div>
+      <div class="formFooter is-pulled-right">
         <button
           class="button is-primary"
           class:is-loading="{loading}"

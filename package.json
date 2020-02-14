@@ -1,6 +1,6 @@
 {
-  "name": "dinner-app",
-  "description": "dinner application that helps you plan and organize your dinner meals",
+  "name": "trainer",
+  "description": "trainer application which helps you get in good shapes",
   "version": "0.0.1",
   "scripts": {
     "format": "npx prettier --write \"{,!(node_modules)/**/}src/**/*.{js,svelte,json}\"",

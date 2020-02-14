@@ -51,3 +51,18 @@ export function passwordValidate(password) {
 
   return true
 }
+
+/**
+ * Validates username. The only rule is that the username
+ * must be at least 3 characters and no longer than 100
+ *
+ * @param {string} password
+ * @returns {boolean}
+ */
+export function usernameValidate(username) {
+  if (username.length < 3 || username.length > 100) {
+    return false
+  }
+
+  return true
+}
