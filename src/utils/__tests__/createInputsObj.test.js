@@ -18,6 +18,6 @@ test('creates inputs object for email and password', () => {
       error: '',
       isDirty: false,
       shake: false,
-    }
+    },
   })
 })

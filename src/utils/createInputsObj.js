@@ -1,4 +1,3 @@
-
 /**
  * Creates Inputs object with default input object from given keys in array
  * @param {Array<string>} keys object property keys
@@ -6,13 +5,13 @@
  */
 function createInputsObj(keys) {
   if (!Array.isArray(keys)) {
-    return null;
+    return null
   }
 
   const set = new Set(keys)
   const obj = {}
 
-  set.forEach((key) => {
+  set.forEach(key => {
     obj[key] = {
       value: '',
       error: '',

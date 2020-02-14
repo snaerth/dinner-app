@@ -1,7 +1,7 @@
 import HttpStatus from 'http-status-codes'
 import serialize from 'serialize-javascript'
 import { post as request } from './http'
-import { internalServerErrorMsg} from '../constants/errors'
+import { internalServerErrorMsg } from '../constants/errors'
 
 async function auth(req, res, url, postData) {
   try {
