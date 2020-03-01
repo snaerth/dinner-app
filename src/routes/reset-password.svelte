@@ -1,8 +1,5 @@
 <style lang="scss">
   .formFooter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-top: 1em;
   }
 
@@ -27,14 +24,13 @@
   import { goto, stores } from '@sapper/app'
   import { user as userStore } from '../store'
   import { post } from '../services/http'
-  import { emailValidate, passwordValidate } from '../utils/validations'
+  import { passwordValidate } from '../utils/validations'
   import createInputsObj from '../utils/createInputsObj'
-  import { emailErrorMessage, passwordErrorMessage } from '../constants/errors'
+  import { passwordErrorMessage } from '../constants/errors'
   import { ENTER } from '../utils/keyCodes'
   import Input from '../components/form/input.svelte'
   import Notification from '../components/notification.svelte'
   import Center from '../components/center.svelte'
-  import EmailIcon from '../assets/svg/email-24px.svg'
   import VisibilityIcon from '../assets/svg/visibility-24px.svg'
   import VisibilityOffIcon from '../assets/svg/visibility_off-24px.svg'
 
@@ -45,7 +41,7 @@
   let notificationIsOpen = false
   let visibility = false
   // Create default input objects with state
-  const inputs = createInputsObj(['email', 'password'])
+  const { password } = createInputsObj(['password'])
 
   // Submit button keydown event
   function onKeyDown(e) {
@@ -72,12 +68,12 @@
    * @param {String} error error message
    */
   function setError(type, error) {
-    inputs[type].isDirty = true
-    inputs[type].shake = true
-    inputs[type].error = error
+    password.isDirty = true
+    password.shake = true
+    password.error = error
 
     setTimeout(() => {
-      inputs[type].shake = false
+      password.shake = false
     }, 820)
   }
 
@@ -85,30 +81,19 @@
   async function submit() {
     loading = true
 
-    if (!inputs.email.value) {
-      inputs.email.value = document.getElementById('Email').value
+    if (!password.value) {
+      password.value = document.getElementById('Password').value
     }
 
-    if (!emailValidate(inputs.email.value)) {
-      inputs.email.isDirty = true
-      inputs.email.error = emailErrorMessage
-      setError('email', emailErrorMessage)
-    }
-
-    if (!inputs.password.value) {
-      inputs.password.value = document.getElementById('Password').value
-    }
-
-    if (!passwordValidate(inputs.password.value)) {
-      inputs.password.isDirty = true
-      inputs.password.error = passwordErrorMessage
+    if (!passwordValidate(password.value)) {
+      password.isDirty = true
+      password.error = passwordErrorMessage
       setError('password', passwordErrorMessage)
     }
 
-    if (!inputs.email.error && !inputs.password.error) {
+    if (!password.error) {
       const res = await post('auth/signin', {
-        email: inputs.email.value,
-        password: inputs.password.value,
+        password: password.value,
       })
 
       if (res.status === HttpStatus.OK) {
@@ -141,80 +126,49 @@
       detail: { value },
     } = e
 
-    switch (type) {
-      case 'email':
-        if (!emailValidate(value)) {
-          setError('email', emailErrorMessage)
-        } else {
-          inputs.email.error = false
-        }
+    if (type === 'password') {
+      if (!passwordValidate(value)) {
+        setError('password', passwordErrorMessage)
+      } else {
+        password.error = false
+      }
 
-        inputs.email.value = value
-        break
-
-      case 'password':
-        if (!passwordValidate(value)) {
-          setError('password', passwordErrorMessage)
-        } else {
-          inputs.password.error = false
-        }
-
-        inputs.password.value = value
-        break
-
-      default:
-        break
+      password.value = value
     }
   }
 </script>
 
 <svelte:head>
-  <title>Sign in</title>
+  <title>Reset password</title>
 </svelte:head>
 
 <Center boxCenter>
   <div class="box is-relative is-clipped">
-    <h1 class="has-text-centered is-size-3-mobile is-size-2">Welcome</h1>
-    <p class="has-text-centered">
-      Don't have an account?
-      <a href="register" class="has-text-centered">Register here</a>
-    </p>
+    <h1 class="has-text-centered is-size-3-mobile is-size-2">Reset password</h1>
+    <p class="has-text-centered">Choose a new password</p>
     <form autocomplete="off" on:submit|preventDefault="{submit}">
       <Input
-        label="Email"
-        icon="{EmailIcon}"
-        on:email="{handleInputChange}"
-        error="{inputs.email.isDirty && inputs.email.error}"
-        autocomplete="off"
-        placeholder="someone@any.com"
-        value="{inputs.email.value}"
-        shake="{inputs.email.shake}"
-      />
-      <Input
-        label="Password"
+        label="New password"
         icon="{VisibilityIcon}"
         on:password="{handleInputChange}"
         switchIcon="{VisibilityOffIcon}"
         on:iconSwitch="{handleIconSwitch}"
         iconSwitch="{visibility}"
         type="password"
-        error="{inputs.password.isDirty && inputs.password.error}"
+        error="{password.isDirty && password.error}"
         autocomplete="new-password"
         placholder="I am you password"
-        value="{inputs.password.value}"
-        shake="{inputs.password.shake}"
+        value="{password.value}"
+        shake="{password.shake}"
       />
       <div class="formFooter">
-        <a href="forgot-password" class="has-text-centered">
-          Forgot your password?
-        </a>
         <button
           class="button is-primary is-pulled-right"
           class:is-loading="{loading}"
           on:keydown="{onKeyDown}"
           type="submit"
         >
-          <strong>Sign in</strong>
+          <strong>Reset password</strong>
         </button>
       </div>
     </form>
@@ -227,4 +181,3 @@
     {/if}
   </div>
 </Center>
-w

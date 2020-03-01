@@ -23,6 +23,8 @@
   import CloseIcon from '../assets/svg/close-24px.svg'
 
   export let absolute = false
+  export let success
+  export let error
 
   const dispatch = createEventDispatcher()
 
@@ -34,8 +36,10 @@
 </script>
 
 <div
-  class="notification is-danger"
+  class="notification"
   class:absolute
+  class:is-success="{success}"
+  class:is-danger="{error}"
   transition:fly="{{ duration: 700, y: -300, easing: quintOut }}"
 >
   <div

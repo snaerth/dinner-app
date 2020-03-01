@@ -1,9 +1,6 @@
 <style lang="scss">
   .formFooter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2em;
+    margin-top: 1em;
   }
 
   h1 {
@@ -132,6 +129,7 @@
       const res = await post('auth/register', {
         email: inputs.email.value,
         password: inputs.password.value,
+        username: inputs.username.value,
       })
 
       if (
@@ -247,19 +245,19 @@
         value="{inputs.password.value}"
         shake="{inputs.password.shake}"
       />
-      <div class="formFooter is-pulled-right">
+      <div class="formFooter">
         <button
-          class="button is-primary"
+          class="button is-primary is-pulled-right"
           class:is-loading="{loading}"
           on:keydown="{onKeyDown}"
           type="submit"
         >
-          Register
+          <strong>Register</strong>
         </button>
       </div>
     </form>
     {#if errorMessage.length > 0 && notificationIsOpen}
-      <Notification absolute on:close="{closeNotification}">
+      <Notification absolute on:close="{closeNotification}" error>
         <slot>
           {#each errorMessage as msg}{msg.message}{/each}
         </slot>

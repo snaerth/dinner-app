@@ -25,8 +25,13 @@
 <script>
   import { fly, fade } from 'svelte/transition'
   import { quintOut } from 'svelte/easing'
+  import routes from '../routes'
 
   export let closeMenu
+  export let segment
+
+  const general = [routes.home]
+  const authentication = [routes.signin, routes.register]
 </script>
 
 <div transition:fade="{{ duration: 100, opacity: 0.6 }}" on:click="{closeMenu}">
@@ -36,18 +41,23 @@
   >
     <p class="menu-label">General</p>
     <ul class="menu-list">
-      <li>
-        <a href=".">Home</a>
-      </li>
+      {#each general as route}
+        <li>
+          <a class:is-active="{segment === route.name}" href="{route.href}">
+            Home
+          </a>
+        </li>
+      {/each}
     </ul>
     <p class="menu-label">Authentication</p>
     <ul class="menu-list">
-      <li>
-        <a href="signin">Sign in</a>
-      </li>
-      <li>
-        <a href="register">Register</a>
-      </li>
+      {#each authentication as route}
+        <li>
+          <a class:is-active="{segment === route.name}" href="{route.href}">
+            {route.name}
+          </a>
+        </li>
+      {/each}
     </ul>
   </aside>
 </div>

@@ -76,5 +76,5 @@
   </div>
 </nav>
 {#if open}
-  <Menu {closeMenu} />
+  <Menu {closeMenu} {segment} />
 {/if}

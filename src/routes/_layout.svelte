@@ -13,7 +13,13 @@
 
   export let segment
   export let nonce
-  console.log(segment)
+
+  const centeredRoutesArr = [
+    'signin',
+    'register',
+    'forgot-password',
+    'reset-password',
+  ]
 </script>
 
 <svelte:head>
@@ -27,6 +33,6 @@
 
 <Nav {segment} />
 
-<main class:flexCenter="{segment === 'signin' || segment === 'register'}">
+<main class:flexCenter="{centeredRoutesArr.includes(segment)}">
   <slot />
 </main>

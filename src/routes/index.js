@@ -15,4 +15,9 @@ export default {
     href: 'register',
     prefetch: true,
   },
+  forgotPassword: {
+    name: 'Forgot password',
+    href: 'forgot-password',
+    prefetch: false,
+  },
 }
